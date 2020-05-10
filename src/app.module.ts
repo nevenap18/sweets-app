@@ -1,21 +1,22 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { Administrator } from '../entities/administrator.entity';
-import { DatabaseConfig } from '../config/database.config';
-import { Cart } from '../entities/cart.entity';
-import { Color } from '../entities/color.entity';
-import { Ingredient } from '../entities/ingredient.entity';
-import { Kind } from '../entities/kind.entity';
-import { Order } from '../entities/order.entity';
-import { Origin } from '../entities/origin.entity';
-import { Photo } from '../entities/photo.entity';
-import { SweetCart } from '../entities/sweet-cart.entity';
-import { SweetIngredient } from '../entities/sweet-ingredient.entity';
-import { SweetKind } from '../entities/sweet-kinds.entity';
-import { Sweet } from '../entities/sweet.entity';
-import { ApiAdministratorController } from './controllers/administrator.controller';
+import { Administrator } from './entities/administrator.entity';
+import { Cart } from './entities/cart.entity';
+import { Color } from './entities/color.entity';
+import { Ingredient } from './entities/ingredient.entity';
+import { Kind } from './entities/kind.entity';
+import { Order } from './entities/order.entity';
+import { Origin } from './entities/origin.entity';
+import { Photo } from './entities/photo.entity';
+import { SweetCart } from './entities/sweet-cart.entity';
+import { SweetIngredient } from './entities/sweet-ingredient.entity';
+import { SweetKind } from './entities/sweet-kinds.entity';
+import { Sweet } from './entities/sweet.entity';
+import { AdministratorController } from './controllers/administrator.controller';
+import { SweetService } from './services/sweet/sweet.service';
 import { AdministratorService } from './services/administrator/administrator.service';
+import { DatabaseConfig } from 'config/database.config';
 
 @Module({
   imports: [
@@ -58,11 +59,12 @@ import { AdministratorService } from './services/administrator/administrator.ser
   ],
   controllers: [
     AppController,
-    ApiAdministratorController
+    AdministratorController
   
   ],
   providers: [
-    AdministratorService
+    AdministratorService,
+    SweetService
   ],
 })
 export class AppModule {}
