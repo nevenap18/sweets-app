@@ -17,6 +17,7 @@ import { AdministratorController } from './controllers/administrator.controller'
 import { SweetService } from './services/sweet/sweet.service';
 import { AdministratorService } from './services/administrator/administrator.service';
 import { DatabaseConfig } from 'config/database.config';
+import { SweetController } from './controllers/sweet.contoller';
 
 @Module({
   imports: [
@@ -59,8 +60,8 @@ import { DatabaseConfig } from 'config/database.config';
   ],
   controllers: [
     AppController,
-    AdministratorController
-  
+    AdministratorController,
+    SweetController
   ],
   providers: [
     AdministratorService,
