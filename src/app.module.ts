@@ -18,6 +18,15 @@ import { SweetService } from './services/sweet/sweet.service';
 import { AdministratorService } from './services/administrator/administrator.service';
 import { DatabaseConfig } from 'config/database.config';
 import { SweetController } from './controllers/sweet.contoller';
+import { KindService } from './services/kind/kind.service';
+import { KindController } from './controllers/kind.controller';
+import { ColorService } from './services/color/color.service';
+import { ColorController } from './controllers/color.controller';
+import { OriginService } from './services/origin/origin.service';
+import { OriginController } from './controllers/origin.controller';
+import { IngredientService } from './services/ingredient/ingredient.service';
+import { IngredientController } from './controllers/ingredient.controller';
+
 
 @Module({
   imports: [
@@ -61,11 +70,19 @@ import { SweetController } from './controllers/sweet.contoller';
   controllers: [
     AppController,
     AdministratorController,
-    SweetController
+    SweetController,
+    KindController,
+    ColorController,
+    OriginController,
+    IngredientController
   ],
   providers: [
     AdministratorService,
-    SweetService
+    SweetService,
+    KindService,
+    ColorService,
+    OriginService,
+    IngredientService
   ],
 })
 export class AppModule {}

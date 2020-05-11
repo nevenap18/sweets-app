@@ -28,6 +28,9 @@ import { Sweet } from "src/entities/sweet.entity";
           },
           kinds: {
               eager: true
+          },
+          ingredients: {
+              eager: true
           }
         },
     },

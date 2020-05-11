@@ -16,6 +16,7 @@ import { SweetIngredient } from "./sweet-ingredient.entity";
 import { SweetKind } from "./sweet-kinds.entity";
 import { Origin } from "./origin.entity";
 import { Kind } from "./kind.entity";
+import { Ingredient } from "./ingredient.entity";
 
 @Index("fk_sweet_color_id", ["colorId"], {})
 @Index("fk_sweet_origin_id", ["originId"], {})
@@ -57,6 +58,14 @@ export class Sweet {
 
   @OneToMany(() => SweetIngredient, (sweetIngredient) => sweetIngredient.sweet)
   sweetIngredients: SweetIngredient[];
+
+  @ManyToMany(type => Ingredient)
+  @JoinTable({
+    name: 'sweet_ingredient',
+    joinColumn: { name: 'sweet_id', referencedColumnName: 'sweetId' },
+    inverseJoinColumn: { name: 'ingredient_id', referencedColumnName: 'ingredientId' },
+  })
+  ingredients: Ingredient[];
 
   @OneToMany(() => SweetKind, (sweetKind) => sweetKind.sweet)
   sweetKinds: SweetKind[];

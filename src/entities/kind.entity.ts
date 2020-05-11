@@ -25,11 +25,12 @@ export class Kind {
   @OneToMany(() => SweetKind, (sweetKind) => sweetKind.kind)
   sweetKinds: SweetKind[];
 
-  @ManyToMany(type => Sweet, sweet => sweet.kinds)
+  @ManyToMany(type => Sweet)
   @JoinTable({
     name: 'sweet_kind',
-    joinColumn: { name: 'kind_id', referencedColumnName: 'kindId'},
-    inverseJoinColumn: { name: 'sweet_id ', referencedColumnName: 'sweetId'}
+    joinColumn: { name: 'kind_id', referencedColumnName: 'kindId' },
+    inverseJoinColumn: { name: 'sweet_id', referencedColumnName: 'sweetId' },
   })
-  sweets: Sweet[]
+  sweets: Sweet[];
+
 }
