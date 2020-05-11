@@ -11,7 +11,24 @@ import { Sweet } from "src/entities/sweet.entity";
     },
     query: {
         join: {
-          
+          color: {
+              eager: true
+          },
+          origin: {
+              eager: true
+          },
+          photos: {
+              eager: true
+          },
+          sweetKinds: {
+              eager: true
+          },
+          sweetIngredients: {
+              eager: true
+          },
+          kinds: {
+              eager: true
+          }
         },
     },
 })

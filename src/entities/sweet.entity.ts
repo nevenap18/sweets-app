@@ -6,6 +6,8 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 import { Photo } from "./photo.entity";
 import { SweetCart } from "./sweet-cart.entity";
@@ -13,6 +15,7 @@ import { Color } from "./color.entity";
 import { SweetIngredient } from "./sweet-ingredient.entity";
 import { SweetKind } from "./sweet-kinds.entity";
 import { Origin } from "./origin.entity";
+import { Kind } from "./kind.entity";
 
 @Index("fk_sweet_color_id", ["colorId"], {})
 @Index("fk_sweet_origin_id", ["originId"], {})
@@ -57,6 +60,14 @@ export class Sweet {
 
   @OneToMany(() => SweetKind, (sweetKind) => sweetKind.sweet)
   sweetKinds: SweetKind[];
+
+  @ManyToMany(type => Kind)
+  @JoinTable({
+    name: 'sweet_kind',
+    joinColumn: { name: 'sweet_id', referencedColumnName: 'sweetId' },
+    inverseJoinColumn: { name: 'kind_id', referencedColumnName: 'kindId' },
+  })
+  kinds: Kind[];
 
   @ManyToOne(() => Origin, (origin) => origin.sweets, {
     onDelete: "NO ACTION",
