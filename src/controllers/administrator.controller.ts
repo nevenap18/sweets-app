@@ -14,7 +14,7 @@ export class AdministratorController {
   }
 
   @Get(':id') // GET http://localhost:3000/api/administrator/2/
-  getSingleAdministrator(@Param('id') id: number): Promise<Administrator | ApiResponse> {
+  getSingleAdministrator(@Param('id') id: number): Promise<Administrator> {
     return this.administratorService.getById(id);
   }
 

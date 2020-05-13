@@ -28,6 +28,7 @@ import { IngredientService } from './services/ingredient/ingredient.service';
 import { IngredientController } from './controllers/ingredient.controller';
 import { AuthController } from './controllers/auth.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import { PhotoService } from './services/photo/photo.service';
 
 
 @Module({
@@ -85,7 +86,8 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
     KindService,
     ColorService,
     OriginService,
-    IngredientService
+    IngredientService,
+    PhotoService
   ],
   exports: [
     AdministratorService
