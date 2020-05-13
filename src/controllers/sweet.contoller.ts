@@ -1,7 +1,8 @@
-import { Controller } from "@nestjs/common";
+import { Controller, Post, Body } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
 import { SweetService } from "src/services/sweet/sweet.service";
 import { Sweet } from "src/entities/sweet.entity";
+import { AddSweetDto } from "src/dtos/sweet/add.sweet.dto";
 
 @Controller('api/sweet')
 @Crud({
@@ -37,4 +38,9 @@ import { Sweet } from "src/entities/sweet.entity";
 })
 export class SweetController {
     constructor(public service: SweetService) { }
+
+    @Post('create')
+    createSweet(@Body() data: AddSweetDto) {
+        return this.service.createSweet(data)
+    }
 }
