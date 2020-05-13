@@ -17,21 +17,18 @@ export class AdministratorService {
     return this.administrator.find()
   }
 
-  getById(id: number): Promise<Administrator | ApiResponse> {
-    return new Promise(async (resolve) => {
-      let admin = await this.administrator.findOne(id)
-      
-      if(!admin) {
-        resolve(new ApiResponse('error', -1002, 'admin_does_not_exist'))
-      }
-
-      resolve(admin)
-
+  async getByUsername(usernameArg: string): Promise<Administrator | null> {
+    const admin = await this.administrator.findOne({
+      username: usernameArg
     })
 
-
-    return this.administrator.findOne(id)
+    return admin || null
   }
+
+  getById(id: number): Promise<Administrator> {
+      return this.administrator.findOne(id)
+  }
+
   add(data: AddAdministratorDto): Promise<Administrator | ApiResponse>  {
 
     const passwordHash = crypto.createHash('sha512')

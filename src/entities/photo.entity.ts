@@ -25,6 +25,14 @@ export class Photo {
   })
   imagePath: string;
 
+  @Column({
+    type: "tinyint",
+    name: "primary",
+    unsigned: true,
+    default: () => "'0'",
+  })
+  primary: number;
+
   @ManyToOne(() => Sweet, (sweet) => sweet.photos, {
     onDelete: "NO ACTION",
     onUpdate: "CASCADE",

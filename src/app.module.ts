@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Administrator } from './entities/administrator.entity';
@@ -26,6 +26,8 @@ import { OriginService } from './services/origin/origin.service';
 import { OriginController } from './controllers/origin.controller';
 import { IngredientService } from './services/ingredient/ingredient.service';
 import { IngredientController } from './controllers/ingredient.controller';
+import { AuthController } from './controllers/auth.controller';
+import { AuthMiddleware } from './middlewares/auth.middleware';
 
 
 @Module({
@@ -74,7 +76,8 @@ import { IngredientController } from './controllers/ingredient.controller';
     KindController,
     ColorController,
     OriginController,
-    IngredientController
+    IngredientController,
+    AuthController
   ],
   providers: [
     AdministratorService,
@@ -84,5 +87,17 @@ import { IngredientController } from './controllers/ingredient.controller';
     OriginService,
     IngredientService
   ],
+  exports: [
+    AdministratorService
+  ]
 })
-export class AppModule {}
+
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+    .apply(AuthMiddleware)
+    .exclude('auth/*')
+    .forRoutes('api/*')
+ }
+  
+}
