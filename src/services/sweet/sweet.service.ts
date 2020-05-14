@@ -57,6 +57,5 @@ export class SweetService extends TypeOrmCrudService<Sweet> {
         "ingredients"
       ]
     })
-
   }
 }

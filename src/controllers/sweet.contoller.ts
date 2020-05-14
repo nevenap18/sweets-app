@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, UseInterceptors, UploadedFile, Req } from "@nestjs/common";
+import { Controller, Post, Body, Param, UseInterceptors, UploadedFile, Req, Delete } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
 import { SweetService } from "src/services/sweet/sweet.service";
 import { Sweet } from "src/entities/sweet.entity";
@@ -9,6 +9,9 @@ import { StorageConfig } from "config/storage.config";
 import { PhotoService } from "src/services/photo/photo.service";
 import { Photo } from "src/entities/photo.entity";
 import { ApiResponse } from "src/misc/api.response.class";
+import * as fileType from 'file-type'
+import * as fs from 'fs';
+import * as sharp from 'sharp';
 
 @Controller('api/sweet')
 @Crud({
@@ -57,7 +60,7 @@ export class SweetController {
     @UseInterceptors(
         FileInterceptor('photo', {
             storage: diskStorage({
-                destination: StorageConfig.photos,
+                destination: StorageConfig.photo.directory,
                 filename: (req, file, cb) => {
 
                     let original = file.originalname
@@ -77,7 +80,7 @@ export class SweetController {
                     cb(null, fileName)
                 },
                 limits: {
-                    fileSize: StorageConfig.photoMaxFileSize
+                    fileSize: StorageConfig.photo.photoMaxFileSize
                 }
             }),
             fileFilter: (req, file, cb) => {
@@ -101,12 +104,26 @@ export class SweetController {
     async uploadPhoto(@Param('id') sweetId: number, @UploadedFile() photo, @Req() req): Promise<Photo | ApiResponse> {
 
         if (req.fileFilterError !== undefined) {
-            return new ApiResponse('error', -4002, req.fileFilterError);
+            return new ApiResponse('error', -4001, req.fileFilterError);
         }
 
         if (!photo) {
-            return new ApiResponse('error', -4001, 'no photo');
+            return new ApiResponse('error', -4002, 'no photo');
         }
+
+        const fileTypeResult = await fileType.fromFile(photo.path);
+        if (!fileTypeResult) {
+            fs.unlinkSync(photo.path);
+            return new ApiResponse('error', -4003, 'Wrong file content');
+        }
+
+        const realMimeType: string = fileTypeResult.mime;
+        if (!(realMimeType.includes('jpeg') || realMimeType.includes('png'))) {
+            fs.unlinkSync(photo.path);
+            return new ApiResponse('error', -4004, 'Wrong file content');
+        }
+
+        await this.createResizedImage(photo, StorageConfig.photo.resize.square);
 
         const newPhoto: Photo = new Photo()
         newPhoto.sweetId = sweetId
@@ -115,9 +132,45 @@ export class SweetController {
         const savedPhoto = await this.photoService.add(newPhoto)
 
         if (!savedPhoto) {
-            return new ApiResponse('error', -4003, 'photo not saved')
+            return new ApiResponse('error', -4005, 'photo not saved')
         }
 
         return savedPhoto
+    }
+
+    async createResizedImage(photo, resizeOptions) {
+        const destination = StorageConfig.photo.directory + resizeOptions.directory + photo.filename;         
+
+        await sharp(photo.path).resize({ fit: 'cover', width: resizeOptions.width, height: resizeOptions.height }).toFile(destination);
+
+    }
+
+    @Delete(':sweetId/deletePhoto/:photoId')
+    async deletePhoto(
+        @Param('sweetId') sweetId: number,
+        @Param('photoId') photoId: number
+    ) {
+        const photo = await this.photoService.findOne({
+            photoId: photoId,
+            sweetId: sweetId
+        });
+
+        if (!photo) {
+            return new ApiResponse("error", -4006, 'Photo not found.');
+        }
+
+        try {
+            fs.unlinkSync(StorageConfig.photo.directory + photo.imagePath);
+            fs.unlinkSync(StorageConfig.photo.directory +
+                          StorageConfig.photo.resize.square.directory +
+                          photo.imagePath);
+        } catch (e) { }
+
+        const deleteResult = await this.photoService.deleteById(photoId);
+        if (!deleteResult.affected) {
+            return new ApiResponse("error", -4007, 'Photo not found.');
+        }
+
+        return new ApiResponse("ok", 0, 'One photo has been deleted.');
     }
 }
