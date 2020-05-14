@@ -25,14 +25,13 @@ export class AuthMiddleware implements NestMiddleware {
     let jwtData: JwtDataAdministratorDto
 
     try {
+
       jwtData = jwt.verify(token, jwtSecret)
 
-      if (!jwtData) {
-        throw new HttpException('Token is not valid!', HttpStatus.UNAUTHORIZED);
-      }
-
     } catch (e) {
+
       throw new HttpException('Token is not valid!', HttpStatus.UNAUTHORIZED);
+      
     }
 
     if (!jwtData) {
