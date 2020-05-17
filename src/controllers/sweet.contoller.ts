@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, UseInterceptors, UploadedFile, Req, Delete } from "@nestjs/common";
+import { Controller, Post, Body, Param, UseInterceptors, UploadedFile, Req, Delete, Patch } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
 import { SweetService } from "src/services/sweet/sweet.service";
 import { Sweet } from "src/entities/sweet.entity";
@@ -12,6 +12,7 @@ import { ApiResponse } from "src/misc/api.response.class";
 import * as fileType from 'file-type'
 import * as fs from 'fs';
 import * as sharp from 'sharp';
+import { EditSweetDto } from "src/dtos/sweet/edit.sweet.dto";
 
 @Controller('api/sweet')
 @Crud({
@@ -44,6 +45,13 @@ import * as sharp from 'sharp';
           }
         },
     },
+    routes: {
+        exclude: [
+            'updateOneBase',
+            'replaceOneBase',
+            'deleteOneBase',
+        ],
+    }
 })
 export class SweetController {
     constructor(
@@ -80,6 +88,7 @@ export class SweetController {
                     cb(null, fileName)
                 },
                 limits: {
+                    files: 1,
                     fileSize: StorageConfig.photo.photoMaxFileSize
                 }
             }),
@@ -172,5 +181,9 @@ export class SweetController {
         }
 
         return new ApiResponse("ok", 0, 'One photo has been deleted.');
+    }
+    @Patch(':id')
+    async editById(@Param('id') id: number, @Body() data: EditSweetDto) {
+        return await this.service.editSweet(id, data);
     }
 }
