@@ -1,6 +1,8 @@
 export const StorageConfig = {
   photo: {
     directory: '../storage/photos/',
+    urlPrefix: '/assests/photos',
+    maxAge: 1000 * 60 * 60 * 24 * 7,
     photoMaxFileSize: 1024 * 1024 * 4,
     resize: {
       square: {
