@@ -1,3 +1,6 @@
+
+#### Running the app: npm run dev
+
 ## Description
 
 Aplikacija za on-lajn kupovinu slatkiša
