@@ -41,7 +41,8 @@ export class Order {
   @Column("varchar", { name: "customer_address", length: 200 })
   customerAddress: string;
 
-  @Column("int", { name: "price", unsigned: true })
+  @Column("int", { name: "price", unsigned: true, 
+  default: () => "'0'" })
   price: number;
 
   @Column("varchar", {
