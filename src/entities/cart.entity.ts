@@ -13,7 +13,8 @@ export class Cart {
   @PrimaryGeneratedColumn({ type: "int", name: "cart_id", unsigned: true })
   cartId: number;
 
-  @Column("int", { unsigned: true })
+  @Column("int", { unsigned: true, 
+  default: () => "'0'" })
   price: number;
 
   @OneToOne(() => Order, (order) => order.cart)

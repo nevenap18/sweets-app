@@ -29,6 +29,8 @@ import { IngredientController } from './controllers/ingredient.controller';
 import { AuthController } from './controllers/auth.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { PhotoService } from './services/photo/photo.service';
+import { CartService } from './services/cart/cart.service';
+import { CartController } from './controllers/cart.controller';
 
 
 @Module({
@@ -78,7 +80,8 @@ import { PhotoService } from './services/photo/photo.service';
     ColorController,
     OriginController,
     IngredientController,
-    AuthController
+    AuthController,
+    CartController
   ],
   providers: [
     AdministratorService,
@@ -87,7 +90,8 @@ import { PhotoService } from './services/photo/photo.service';
     ColorService,
     OriginService,
     IngredientService,
-    PhotoService
+    PhotoService,
+    CartService
   ],
   exports: [
     AdministratorService
