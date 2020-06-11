@@ -1,4 +1,4 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Administrator } from './entities/administrator.entity';
@@ -103,7 +103,10 @@ export class AppModule implements NestModule {
     consumer
     .apply(AuthMiddleware)
     .exclude('auth/*')
-    .forRoutes('api/*')
+    .forRoutes({path: 'api/*', method: RequestMethod.POST},
+     {path: 'api/*', method: RequestMethod.PATCH},
+     {path: 'api/*', method: RequestMethod.DELETE},
+    {path: 'api/*', method: RequestMethod.PUT})
  }
   
 }
