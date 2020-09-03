@@ -31,6 +31,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { PhotoService } from './services/photo/photo.service';
 import { CartService } from './services/cart/cart.service';
 import { CartController } from './controllers/cart.controller';
+import { PhotoController } from './controllers/photo.controller';
 
 
 @Module({
@@ -81,7 +82,8 @@ import { CartController } from './controllers/cart.controller';
     OriginController,
     IngredientController,
     AuthController,
-    CartController
+    CartController,
+    PhotoController
   ],
   providers: [
     AdministratorService,
@@ -102,11 +104,11 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
     .apply(AuthMiddleware)
-    .exclude('auth/*', 'api/cart/*')
+    .exclude('auth/*', 'api/cart/createCart')
     .forRoutes({path: 'api/*', method: RequestMethod.POST},
      {path: 'api/*', method: RequestMethod.PATCH},
      {path: 'api/*', method: RequestMethod.DELETE},
-    {path: 'api/*', method: RequestMethod.PUT})
+     {path: 'api/*', method: RequestMethod.PUT})
  }
   
 }

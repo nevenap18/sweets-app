@@ -36,7 +36,7 @@ export class CartService {
       newSweetCart.sweetId = sweet.sweetId
       newSweetCart.quantity = sweet.quantity
 
-      price += newSweetCart.quantity * sweet.price
+      price += sweet.price
 
       await this.sweetCart.save(newSweetCart)
     }

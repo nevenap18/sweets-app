@@ -12,7 +12,7 @@ export class CartController {
 
       if (data.sweets.length === 0) return null
 
-      let cart = await this.service.createCart()
+      const cart = await this.service.createCart()
       
       console.log(cart)
 

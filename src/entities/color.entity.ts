@@ -20,5 +20,5 @@ export class Color {
   name: string;
 
   @OneToMany(() => Sweet, (sweet) => sweet.color)
-  sweets: Sweet[];
+  sweets: Sweet[];z
 }

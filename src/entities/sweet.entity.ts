@@ -18,8 +18,9 @@ import { Origin } from "./origin.entity";
 import { Kind } from "./kind.entity";
 import { Ingredient } from "./ingredient.entity";
 
-@Index("fk_sweet_color_id", ["colorId"], {})
-@Index("fk_sweet_origin_id", ["originId"], {})
+@Index("fk_sweet_color_idd", ["colorId"], {})
+@Index("fk_sweet_origin_idd", ["originId"], {})
+@Index("fk_sweet_photo_idd", ["photoId"], {})
 @Entity("sweet")
 export class Sweet {
   @PrimaryGeneratedColumn({ type: "int", name: "sweet_id", unsigned: true })
@@ -37,6 +38,9 @@ export class Sweet {
   @Column("int", { name: "origin_id", unsigned: true })
   originId: number;
 
+  @Column("int", { name: "photo_id", unsigned: true })
+  photoId: number;
+
   @Column("int", { unsigned: true })
   price: number;
 
@@ -45,6 +49,9 @@ export class Sweet {
 
   @OneToMany(() => Photo, (photo) => photo.sweet)
   photos: Photo[];
+
+  @JoinColumn([{ name: "photo_id", referencedColumnName: "photoId" }])
+  photo: Photo;
 
   @OneToMany(() => SweetCart, (sweetCart) => sweetCart.sweet)
   sweetCarts: SweetCart[];
